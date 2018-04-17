@@ -2751,6 +2751,7 @@ module Dm = struct
       (* At this point we expect qemu to outlive us; we will never call waitpid *)
       Forkhelpers.dontwaitpid qemu_pid
     | Some _ ->
+      Forkhelpers.dontwaitpid qemu_pid;
       (* We register a callback to be run asynchronously in case qemu fails/crashes or is killed *)
       let waitpid_async x ~callback =
         ignore(Thread.create (fun x->callback (try Forkhelpers.waitpid_fail_if_bad_exit x; None with e -> Some e)) x)
